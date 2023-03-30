@@ -334,7 +334,7 @@ function kirimWA() {
     return;
   }
 
-  const message = `tanggal${tanggal}:\nSaldo Sebelumnya: ${saldo}\nKas di Terima: ${kas}\nTotal Kas: ${totalKas}\nDaftar Belanja:\n${daftarBelanja}\nTotal Pengeluaran: ${pengeluaran}\nSisa Saldo: ${sisaSaldo}`;
+  const message = `tanggal ${tanggal}:\nSaldo Sebelumnya: ${saldo}\nKas di Terima: ${kas}\nTotal Kas: ${totalKas}\nDaftar Belanja:\n${daftarBelanja}\nTotal Pengeluaran: ${pengeluaran}\nSisa Saldo: ${sisaSaldo}`;
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const url = `https://${isMobile ? 'api' : 'web'}.whatsapp.com/send?phone=+6281372981313&text=${encodeURIComponent(message)}`;
   window.open(url, '_blank');
