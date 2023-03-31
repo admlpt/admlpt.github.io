@@ -5,6 +5,9 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
 
 	<style>
     body {
@@ -196,6 +199,59 @@ display: none;
 }
 
 
+.import-container {
+  display: flex;
+  align-items: center;
+}
+
+.import-label {
+  margin-right: 10px;
+}
+
+.import-btn {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Styling untuk tampilan saat user memilih file */
+input[type="file"]:focus,
+input[type="file"]:active {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Styling untuk tampilan saat user memilih file */
+input[type="file"] {
+  position: absolute;
+  top: -9999px;
+  visibility: hidden;
+}
+
+/* Styling untuk tampilan label file yang dipilih */
+.import-label::after {
+  content: attr(data-file-name);
+  margin-left: 10px;
+  font-style: italic;
+  color: #555;
+}
+
+.error {
+  animation: zoomin .30s linear forwards;
+}
+
+@keyframes zoomin {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
 		
 	</style>
 </head>
@@ -208,10 +264,11 @@ display: none;
       <input type="date" id="tanggal" name="tanggal" value="" required>
   
       <label for="saldo">Saldo Sebelumnya</label>
-      <input type="text" id="saldo" name="saldo" onkeyup="formatNumber(this)" placeholder="contoh: 1.000.000">
+      <input type="text" id="saldo" name="saldo" onkeyup="formatNumber(this)" onblur="validateNumber(this)">
   
       <label for="kas">Kas Di Terima</label>
-      <input type="text" id="kas" name="kas" onkeyup="formatNumber(this)" placeholder="contoh: 500.000">
+      <input type="text" id="kas" name="kas" onkeyup="formatNumber(this)" onblur="validateNumber(this)">
+
   
       <label for="total">Total Kas</label>
       <input type="text" id="total" name="total" readonly>
@@ -223,7 +280,7 @@ display: none;
       <input type="text" id="deskripsi" name="deskripsi">
   
       <label for="belanja">Total Belanja</label>
-      <input type="text" id="belanja" name="belanja" onkeyup="formatInput(this)" placeholder="contoh: 100.000">
+      <input type="text" id="belanja" name="belanja" onkeyup="formatInput(this)">
   
       <button type="submit">Tambahkan</button>
     </form>
@@ -244,8 +301,14 @@ display: none;
     <div class="actions">
       <button onclick="kirimWA()">Kirim ke WhatsApp</button>
       <button onclick="downloadExcel()">Download Excel</button>
+        <div class="import-container">
+        <label for="importExcel" class="import-label"></label>
+        <input type="file" id="importExcel" accept=".xlsx" onchange="importExcel()" multiple>
+        <button onclick="document.getElementById('importExcel').click()" class="import-btn">Import</button>
+      </div>
     </div>
-  </div>
+    
+    
   
 
 	  <script>
@@ -318,6 +381,7 @@ function tambahBelanjaan() {
   // menghitung sisa saldo
   hitungSisaSaldo();
 }
+
 function kirimWA() {
   const nomor = '081372981313';
   const inputTanggal = document.getElementById('tanggal').value;
@@ -325,7 +389,15 @@ function kirimWA() {
   const saldo = document.getElementById('saldo').value;
   const kas = document.getElementById('kas').value;
   const totalKas = document.getElementById('total').value;
-  const daftarBelanja = document.getElementById('daftarBelanja').innerText;
+  const daftarBelanjaElement = document.getElementById('daftarBelanja');
+  const daftarBelanja = [...daftarBelanjaElement.querySelectorAll('div')]
+  .map(item => {
+    const [namaBarang, harga] = item.innerText.split(" - ");
+    return `${namaBarang} -  Rp ${harga}`;
+  })
+  .join('\n');
+
+
   const pengeluaran = document.getElementById('pengeluaran').innerText;
   const sisaSaldo = document.getElementById('sisasaldo').innerText;
 
@@ -334,11 +406,15 @@ function kirimWA() {
     return;
   }
 
-  const message = `tanggal ${tanggal}:\nSaldo Sebelumnya: ${saldo}\nKas di Terima: ${kas}\nTotal Kas: ${totalKas}\nDaftar Belanja:\n${daftarBelanja}\nTotal Pengeluaran: ${pengeluaran}\nSisa Saldo: ${sisaSaldo}`;
+  const message = `Tanggal = ${tanggal}\n\nSaldo Sebelumnya = Rp ${saldo}\nKas di Terim = Rp ${kas}\nTotal Kas = Rp ${totalKas}\n\nDaftar Belanja:\n${daftarBelanja}\n\nTotal Pengeluaran = Rp ${pengeluaran}\nSisa Saldo = Rp ${sisaSaldo}`;
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   const url = `https://${isMobile ? 'api' : 'web'}.whatsapp.com/send?phone=+6281372981313&text=${encodeURIComponent(message)}`;
   window.open(url, '_blank');
 }
+
+
+
+
 
 
 function downloadExcel() {
@@ -352,21 +428,151 @@ function downloadExcel() {
   const tahun = rawTanggal.getFullYear();
   const tanggalFormatted = tanggal + "-" + bulan + "-" + tahun;
 
-  const saldo = document.getElementById('saldo').value.replace(/[.]/g, ',');
-  const kas = document.getElementById('kas').value.replace(/[.]/g, ',');
-  const totalKas = document.getElementById('total').value.replace(/[.]/g, ',');
-  const daftarBelanja = document.getElementById('daftarBelanja').innerText;
-  const pengeluaran = document.getElementById('pengeluaran').innerText.replace(/[.]/g, ',');
-  const sisaSaldo = document.getElementById('sisasaldo').innerText.replace(/[.]/g, ',');
-
+  const saldo = {v: parseFloat(document.getElementById('saldo').value.replace(/[.]/g, '').replace(/,/g, '.')), t: 'n'};
+  const kas = {v: parseFloat(document.getElementById('kas').value.replace(/[.]/g, '').replace(/,/g, '.')), t: 'n'};
+  const totalKas = {v: parseFloat(document.getElementById('total').value.replace(/[.]/g, '').replace(/,/g, '.')), t: 'n'};
+  const daftarBelanja = {v: document.getElementById('daftarBelanja').innerText, t: 's'};
+  const pengeluaran = {v: parseFloat(document.getElementById('pengeluaran').innerText.replace(/[.]/g, '').replace(/,/g, '.')), t: 'n'};
+  const sisaSaldo = {v: parseFloat(document.getElementById('sisasaldo').innerText.replace(/[.]/g, '').replace(/,/g, '.')), t: 'n'};
 
   data.push([tanggalFormatted, saldo, kas, totalKas, daftarBelanja, pengeluaran, sisaSaldo]);
 
   const workbook = XLSX.utils.book_new();
   const worksheet = XLSX.utils.aoa_to_sheet(data);
+  worksheet['!cols'] = [
+    {wch: 15}, // Tanggal
+    {wch: 15}, // Saldo
+    {wch: 15}, // Kas
+    {wch: 15}, // Total Kas
+    {wch: 30}, // Daftar Belanja
+    {wch: 15}, // Pengeluaran
+    {wch: 15}  // Sisa Saldo
+  ];
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Laporan Keuangan');
-  XLSX.writeFile(workbook, 'laporan_keuangan.xlsx');
+  
+  const filename = `laporan_keuangan_${tanggalFormatted}.xlsx`;
+  XLSX.writeFile(workbook, filename);
 }
+
+
+
+
+
+
+
+
+
+let mergedData = [];
+
+function importExcel() {
+  const files = document.getElementById('importExcel').files;
+  let numFiles = files.length;
+  let count = 0;
+
+  for (let i = 0; i < numFiles; i++) {
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, {type: 'array'});
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const importData = XLSX.utils.sheet_to_json(worksheet);
+
+      // Tambahkan data dari file saat ini ke dalam array yang ada
+      mergedData = mergedData.concat(importData);
+
+      count++;
+
+      // Jika semua file sudah diimpor, tampilkan data yang digabungkan
+      if (count === numFiles) {
+        calculateTotal();
+        displayMergedData();
+      }
+    };
+
+    reader.readAsArrayBuffer(files[i]);
+  }
+}
+
+function calculateTotal() {
+  let totalSaldo = 0;
+  let totalKas = 0;
+  let totalTotalKas = 0;
+  let totalPengeluaran = 0;
+  let totalSisaSaldo = 0;
+
+  mergedData.forEach(function(data) {
+    totalSaldo += data['Saldo'] || 0;
+    totalKas += data['Kas'] || 0;
+    totalTotalKas += data['Total Kas'] || 0;
+    totalPengeluaran += data['Pengeluaran'] || 0;
+    totalSisaSaldo += data['Sisa Saldo'] || 0;
+  });
+
+  // tambahkan row baru pada mergedData untuk menampilkan total
+  mergedData.push({
+    'Tanggal': 'Total',
+    'Saldo': totalSaldo,
+    'Kas': totalKas,
+    'Total Kas': totalTotalKas,
+    'Daftar Belanja': '',
+    'Pengeluaran': totalPengeluaran,
+    'Sisa Saldo': totalSisaSaldo
+  });
+}
+
+function displayMergedData() {
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.json_to_sheet(mergedData);
+
+  // Tambahkan header ke worksheet
+  XLSX.utils.sheet_add_aoa(ws, [
+    ['Tanggal', 'Saldo', 'Kas', 'Total Kas', 'Daftar Belanja', 'Pengeluaran', 'Sisa Saldo']
+  ], { origin: 0 });
+
+  // Tambahkan worksheet ke workbook
+  XLSX.utils.book_append_sheet(wb, ws, 'Data');
+
+  // Simpan workbook sebagai file Excel
+  const date = new Date().toISOString().slice(0, 10);
+  const filename = `data_${date}.xlsx`;
+  XLSX.writeFile(wb, filename);
+}
+
+
+
+function validateNumber(input) {
+  var regex = /^[0-9]+$/;
+  var value = input.value;
+
+  if (!regex.test(value)) {
+    input.classList.add("error");
+    setTimeout(function() {
+      input.classList.remove("error");
+    }, 200);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function formatInput(element) {
   let value = element.value;
