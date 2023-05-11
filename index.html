@@ -1,29 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Contoh Membuka File PDF Secara Online</title>
+	<title>Slip Gaji PT LABAI PERSADA TAMBANG</title>
 </head>
 <body>
-	<h1>Contoh Membuka File PDF Secara Online</h1>
-	<p>PDF:</p>
-	<a href="https://admlpt.github.io/001.pdf" target="_blank">Buka File PDF</a>
-    <p>PDF:</p>
-    <a href="https://admlpt.github.io/002.pdf" target="_blank">Buka File PDF</a>
-    <p>PDF:</p>
-    <a href="https://admlpt.github.io/003.pdf" target="_blank">Buka File PDF</a>
-    <p>PDF:</p>
-    <a href="https://admlpt.github.io/004.pdf" target="_blank">Buka File PDF</a>
-
-	<!-- Tombol Kirim Pesan WhatsApp -->
-	<button type="button" onclick="sendWhatsAppMessage('6285750852290', 'Reno', '001.pdf')">Kirim Pesan WhatsApp ke Reno</button>
-    <button type="button" onclick="sendWhatsAppMessage('6281346022971', 'Desvie', '002.pdf')">Kirim Pesan WhatsApp ke Desvie</button>
-    <button type="button" onclick="sendWhatsAppMessage('6282153580636', 'Siti', '003.pdf')">Kirim Pesan WhatsApp ke Siti</button>
-    <button type="button" onclick="sendWhatsAppMessage('6285246818724', 'Merin', '004.pdf')">Kirim Pesan WhatsApp ke Merin</button>
+	<h1>Slip Gaji PT LABAI PERSADA TAMBANG</h1>
+    <div>
+    <div>
+	<button type="button" onclick="sendWhatsAppMessage('6285750852290', 'Reno', 'gaji juni/001.pdf')">Kirim ke Reno</button>
+	<a href="gaji juni/001.pdf" target="_blank">Buka File PDF</a>
+    </div>
+    <br>
+    <div>
+    <button type="button" onclick="sendWhatsAppMessage('6281346022971', 'Desvie', 'gaji juni/002.pdf')">Kirim ke Desvie</button>
+    <a href="gaji juni/002.pdf" target="_blank">Buka File PDF</a>
+    </div>
+    <br>
+    <div>
+    <button type="button" onclick="sendWhatsAppMessage('6282153580636', 'Siti', 'gaji juni/003.pdf')">Kirim ke Siti</button>
+    <a href="gaji juni/003.pdf" target="_blank">Buka File PDF</a>
+    </div>
+    <br>
+    <div>
+    <button type="button" onclick="sendWhatsAppMessage('6285246818724', 'Merin', 'gaji juni/004.pdf')">Kirim ke Merin</button>
+    <a href="gaji juni/004.pdf" target="_blank">Buka File PDF</a>
+    </div>
+    </div>
 
 	<script>
 		function sendWhatsAppMessage(phoneNumber, name, pdfLink) {
 			// Membuat pesan yang akan dikirimkan
-			var message = "Halo " + name + ", berikut ini adalah link file PDF yang anda minta: https://admlpt.github.io/" + pdfLink;
+			var message = "Halo Bapak/Ibu " + name + ", berikut adalah Slip Gaji untuk bulan ini dan silahkan di klik download atau dilihat saja berikut link nya : https://admlpt.github.io/" + pdfLink;
 			// Mengecek apakah pengguna membuka website di perangkat mobile atau laptop
 			if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
 				// Jika pengguna membuka website di perangkat mobile, maka akan membuka WhatsApp melalui aplikasi
