@@ -22,11 +22,18 @@
 
 	<script>
 		function sendWhatsAppMessage(phoneNumber, name, pdfLink) {
-            // Membuat pesan yang akan dikirimkan
+			// Membuat pesan yang akan dikirimkan
 			var message = "Halo " + name + ", berikut ini adalah link file PDF yang anda minta: https://admlpt.github.io/" + pdfLink;
-			// Membuat link untuk mengirim pesan melalui WhatsApp Web
-			var link = "https://web.whatsapp.com/send?phone=" + phoneNumber + "&text=" + encodeURIComponent(message);
-			window.open(link, "_blank");
+			// Mengecek apakah pengguna membuka website di perangkat mobile atau laptop
+			if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+				// Jika pengguna membuka website di perangkat mobile, maka akan membuka WhatsApp melalui aplikasi
+				var link = "whatsapp://send?phone=" + phoneNumber + "&text=" + encodeURIComponent(message);
+				window.location.href = link;
+			} else {
+				// Jika pengguna membuka website di laptop, maka akan membuka WhatsApp melalui web WhatsApp
+				var link = "https://web.whatsapp.com/send?phone=" + phoneNumber + "&text=" + encodeURIComponent(message);
+				window.open(link, "_blank");
+			}
 		}
 	</script>
 </body>
