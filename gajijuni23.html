@@ -2,7 +2,15 @@
 <html>
 <head>
 	<!-- Basic Page Info -->
-	<meta charset="utf-8">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
+	<!-- mobile metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1">
 	<title>Laporan Gaji Karyawan PT LPT</title>
 
 	<!-- Site favicon -->
@@ -52,8 +60,42 @@
 		font-family: 'family', sans-serif;
 		font-weight: bold;
 		font-size: 1.0em;
-		}
-		
+		}	
+
+		/* Tambahkan CSS di bawah ini */
+		table.data-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    table.data-table thead th {
+        font-weight: bold;
+        background-color: #ccc;
+    }
+    
+    table.data-table tbody td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+    
+    table.data-table tbody td:not(.table-plus) {
+        text-align: center;
+    }
+    
+    table.data-table tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    
+    table.data-table tbody tr:hover {
+        background-color: #ddd;
+    }
+    
+    /* Media query untuk layar dengan lebar kurang dari 768 piksel */
+    @media (max-width: 767px) {
+        table.data-table {
+            overflow-x: auto;
+        }
+    }
 
 	</style>
 </head>
