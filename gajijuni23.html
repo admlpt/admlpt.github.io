@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Basic Page Info -->
+	<meta charset="utf-8">
+	<title>Laporan Gaji Karyawan PT LPT</title>
+
+	<!-- Site favicon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="vendors/images/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="vendors/images/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="vendors/images/favicon-16x16.png">
+
+	<!-- Mobile Specific Metas -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<!-- Google Font -->
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="vendors/styles/core.css">
+	<link rel="stylesheet" type="text/css" href="vendors/styles/icon-font.min.css">
+	<link rel="stylesheet" type="text/css" href="src/plugins/datatables/css/dataTables.bootstrap4.min.css">
+	<link rel="stylesheet" type="text/css" href="src/plugins/datatables/css/responsive.bootstrap4.min.css">
+	<link rel="stylesheet" type="text/css" href="vendors/styles/style.css">
+
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css"/>
+
+	<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+	<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+	
+	<style>
+		ion-icon {
+		font-size: 14px;
+		}
+
+		td s {
+		text-decoration: line-through;
+		}
+
+		.dropdown-menu .dropdown-item.active {
+		background-color: #007bff;
+		color: #fff;
+		}
+
+		#slip-gaji {
+		font-family: 'family', sans-serif;
+		font-weight: bold;
+		font-size: 1.0em;
+		}
+		
+
+	</style>
+</head>
+<body>
+	<div class="pre-loader">
+		<div class="pre-loader-box">
+			<div class="loader-logo"><img src="vendors/images/logo-lpt.png" alt=""></div>
+			<div class='loader-progress' id="progress_div">
+				<div class='bar' id='bar1'></div>
+			</div>
+			<div class='percent' id='percent1'>0%</div>
+			<div class="loading-text">
+				Loading...
+			</div>
+		</div>
+	</div>
+
+	<div class="header">
+		<div class="header-left">
+			<div class="menu-icon dw dw-menu"></div>
+			<div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div>
+			<div class="header-search">
+				<form>
+					<div class="form-group mb-0">						
+						<div class="dropdown">
+							<a class="dropdown-toggle no-arrow" href="#" role="button" data-toggle="dropdown">							
+							</a>
+							<div class="dropdown-menu dropdown-menu-right">
+								<div class="form-group row">
+									<label class="col-sm-12 col-md-2 col-form-label">From</label>
+									<div class="col-sm-12 col-md-10">
+										<input class="form-control form-control-sm form-control-line" type="text">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-12 col-md-2 col-form-label">To</label>
+									<div class="col-sm-12 col-md-10">
+										<input class="form-control form-control-sm form-control-line" type="text">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label class="col-sm-12 col-md-2 col-form-label">Subject</label>
+									<div class="col-sm-12 col-md-10">
+										<input class="form-control form-control-sm form-control-line" type="text">
+									</div>
+								</div>
+								<div class="text-right">
+									<button class="btn btn-primary">Search</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="header-right">
+			<div class="dashboard-setting user-notification">
+				<div class="dropdown">
+					<a class="dropdown-toggle no-arrow" href="javascript:;" data-toggle="right-sidebar">
+						<i class="dw dw-settings2"></i>
+					</a>
+				</div>
+			</div>
+			<div class="user-notification">
+				<div class="dropdown">
+					<a class="dropdown-toggle no-arrow" href="#" role="button" data-toggle="dropdown">
+						<i class="icon-copy dw dw-notification"></i>
+						<span class="badge notification-active"></span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right">
+						<div class="notification-list mx-h-350 customscroll">
+							<ul>
+								<li>
+									<a href="#">
+										<img src="vendors/images/img.jpg" alt="">
+										<h3>Pemberitahuan <i class="fas fa-exclamation"></i></h3>
+										<p>Pada bulan ini adalah pembayaran Gaji Karyawan Masa Juni 2023</p>
+									</a>
+								</li>								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="user-info-dropdown">
+				<div class="dropdown">
+					<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+						<span class="user-icon">
+							<img src="vendors/images/photo1.jpg" alt="">
+						</span>
+						<span class="user-name">Admin</span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">					
+						<a class="dropdown-item" href="login.html"><i class="dw dw-logout"></i> Log Out</a>
+					</div>
+				</div>
+			</div>
+			<div class="github-link">
+				
+			</div>
+		</div>
+	</div>
+
+	
+			</div>
+		</div>
+	</div>
+
+	<div class="left-side-bar">
+		<div class="brand-logo">
+			<a href="index.html">
+				
+				<img src="vendors/images/LOGOLPT.png" alt="" class="light-logo">
+			</a>
+			<div class="close-sidebar" data-toggle="left-sidebar-close">
+				<i class="ion-close-round"></i>
+			</div>
+		</div>
+		<div class="menu-block customscroll">
+			<div class="sidebar-menu">
+				<ul id="accordion-menu">
+					<li class="dropdown">
+						<a href="javascript:;" class="dropdown-toggle">
+							<span class="micon dw dw-house-1"></span>
+							<span class="mtext" id="slip-gaji">Slip Gaji</span>
+						</a>						
+					</li>												
+					<li>
+						<div class="dropdown-divider"></div>
+					</li>			
+				</ul>
+			</div>
+		</div>
+	</div>	
+
+	
+
+	<div class="main-container">
+		<div class="xs-pd-20-10 pd-ltr-20">
+			<div class="page-header">
+				<div class="row">
+					<div class="col-md-6 col-sm-12">
+						<div class="title">
+							<h4>GAJI KARYAWAN <i class="fas fa-sign-out-alt"></i></h4>
+						</div>
+						<nav aria-label="breadcrumb" role="navigation">
+							<ol class="breadcrumb">
+								<a href="index.html" class="btn btn-outline-secondary"><i class="fas fa-reply me-2"></i> Kembali</a>
+								
+							</ol>
+						</nav>
+					</div>
+					<div class="col-md-6 col-sm-12 text-right">
+						<div class="dropdown">
+						  <a class="btn btn-primary dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+							<i class="fas fa-sort-amount-down"></i> JUNI 2023
+						  </a>
+						  <div class="dropdown-menu dropdown-menu-right" id="monthDropdown">
+							<a class="dropdown-item" href="#" data-month="Januari">Januari</a>
+							<a class="dropdown-item" href="#" data-month="Februari">Februari</a>
+							<a class="dropdown-item" href="#" data-month="Maret">Maret</a>
+							<a class="dropdown-item" href="#" data-month="April">April</a>
+							<a class="dropdown-item" href="#" data-month="Mei">Mei</a>
+							<a class="dropdown-item" href="#" data-month="Juni"><ion-icon name="ellipsis-horizontal-outline"></ion-icon></a>
+							<a class="dropdown-item" href="#" data-month="Juli">Juli</a>
+							<a class="dropdown-item" href="#" data-month="Agustus">Agustus</a>
+							<a class="dropdown-item" href="#" data-month="September">September</a>
+							<a class="dropdown-item" href="#" data-month="Oktober">Oktober</a>
+							<a class="dropdown-item" href="#" data-month="November">November</a>
+							<a class="dropdown-item" href="#" data-month="Desember">Desember</a>
+						  </div>
+						</div>
+					</div>
+				</div>
+			</div>
+				
+				<!-- multiple select row Datatable start -->
+				<div class="card-box mb-30">
+					<div class="pd-20">
+						<h4 class="text-blue h4"></h4>
+					</div>
+					<div class="pb-20">
+						<table class="data-table table hover multiple-select-row nowrap">
+							<thead>
+								<tr>
+									<th class="table-plus datatable-nosort">Nama Karyawan</th>									
+									<th>Slip Gaji</th>
+									<th>Whatsapp</th>
+									<th>Status Pengiriman</th>
+
+									
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="table-plus">Alvonsius Liqueri Reno <ion-icon name="checkmark-circle-outline" style="color:rgb(15, 141, 57)"></ion-icon></td>
+									<td><a class="btn btn-primary" href="gajijuni/renojuni23.pdf" target="_blank"><ion-icon name="eye-outline"></ion-icon> Lihat</a></td>
+									<td><button type="button" class="btn btn-success" onclick="sendWhatsAppMessage('6285750852290', 'Reno', 'gajijuni/renojuni23.pdf')"><ion-icon name="logo-whatsapp"></ion-icon> Kirim ke Whatsapp</button></td>
+									<td class="not-sent">Belum Terkirim <ion-icon name="alert-circle-outline" style="color:red"></ion-icon></td>
+								  </tr>
+								  <tr>
+									<td class="table-plus">Khian Hua <ion-icon name="checkmark-circle-outline" style="color:rgb(15, 141, 57)"></ion-icon></td>
+									<td><a class="btn btn-primary" href="gajijuni/ahuajuni23.pdf" target="_blank"><ion-icon name="eye-outline"></ion-icon> Lihat</a></td>
+									<td><button type="button" class="btn btn-success" onclick="sendWhatsAppMessage('6281372981313', 'Desvie', 'gajijuni/ahuajuni23.pdf')"><ion-icon name="logo-whatsapp"></ion-icon> Kirim ke Whatsapp</button></td>
+									<td class="not-sent">Belum Terkirim <ion-icon name="alert-circle-outline" style="color:red"></ion-icon></td>
+								  </tr>
+								  
+								  									
+							</tbody>
+						</table>
+					</div>
+				</div>
+				
+		
+				
+
+				
+			<div class="footer-wrap pd-20 mb-20 card-box">
+				@2023 - Design By <a>PT LABAI PERSADA TAMBANG</a>
+			</div>
+		</div>
+	</div>
+	<!-- js -->
+	<script src="vendors/scripts/core.js"></script>
+	<script src="vendors/scripts/script.min.js"></script>
+	<script src="vendors/scripts/process.js"></script>
+	<script src="vendors/scripts/layout-settings.js"></script>
+	<script src="src/plugins/datatables/js/jquery.dataTables.min.js"></script>
+	<script src="src/plugins/datatables/js/dataTables.bootstrap4.min.js"></script>
+	<script src="src/plugins/datatables/js/dataTables.responsive.min.js"></script>
+	<script src="src/plugins/datatables/js/responsive.bootstrap4.min.js"></script>
+	<!-- buttons for Export datatable -->
+	<script src="src/plugins/datatables/js/dataTables.buttons.min.js"></script>
+	<script src="src/plugins/datatables/js/buttons.bootstrap4.min.js"></script>
+	<script src="src/plugins/datatables/js/buttons.print.min.js"></script>
+	<script src="src/plugins/datatables/js/buttons.html5.min.js"></script>
+	<script src="src/plugins/datatables/js/buttons.flash.min.js"></script>
+	<script src="src/plugins/datatables/js/pdfmake.min.js"></script>
+	<script src="src/plugins/datatables/js/vfs_fonts.js"></script>
+	<!-- Datatable Setting js -->
+	<script src="vendors/scripts/datatable-setting.js"></script>
+
+	<script>
+	function sendWhatsAppMessage(phoneNumber, name, pdfLink) {
+    // Membuat pesan yang akan dikirimkan
+    var message = "Selamat Pagi/Siang, Sdr/i " + name + ",\nTelah di lakukan pembayaran atas Gaji Karyawan bulan Juni 2023 dan silahkan cek kembali beserta Download file, berikut slip gaji tersebut klik link di bawah ini :\n\n https://admlpt.github.io/" + pdfLink;
+    // Mengecek apakah pengguna membuka website di perangkat mobile atau laptop
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+      // Jika pengguna membuka website di perangkat mobile, maka akan membuka WhatsApp melalui aplikasi
+      var link = "whatsapp://send?phone=" + phoneNumber + "&text=" + encodeURIComponent(message);
+      window.location.href = link;
+    } else {
+      // Jika pengguna membuka website di laptop, maka akan membuka WhatsApp melalui web WhatsApp
+      var link = "https://web.whatsapp.com/send?phone=" + phoneNumber + "&text=" + encodeURIComponent(message);
+      window.open(link, "_blank");
+    }
+
+    // setelah berhasil mengirim pesan, ubah teks pada elemen <td>
+    var tableRow = event.target.closest('tr');
+    var statusCell = tableRow.querySelector('td:last-child');
+    statusCell.innerHTML = 'Sukses <i class="far fa-paper-plane"></i>';
+  	}
+
+	  
+	</script>
+
+</body>
+</html>
